@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sensor &amp; PRS Review Exercise - AOTC DPVM</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f4f6f8;color:#333;line-height:1.5}
+.header{background:linear-gradient(135deg,#003366,#004488);color:#fff;padding:20px 30px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.header h1{font-size:1.3em;margin-bottom:2px}
+.header p{font-size:.85em;opacity:.8}
+.student-bar{background:#fff;padding:12px 30px;border-bottom:1px solid #ddd;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.student-bar label{font-weight:600;font-size:.85em;color:#555}
+.student-bar input{border:1px solid #ccc;padding:6px 12px;border-radius:4px;font-size:.9em;width:200px}
+.container{max-width:1100px;margin:20px auto;padding:0 16px 40px}
+.exercise{background:#fff;border-radius:10px;padding:24px;margin-bottom:20px;box-shadow:0 2px 6px rgba(0,0,0,.08);border-left:4px solid #006633}
+.exercise h2{color:#006633;font-size:1.15em;margin-bottom:10px}
+.task-text{font-size:.92em;color:#555;margin-bottom:16px}
+.table-wrapper{overflow-x:auto;margin:0 -8px}
+
+table.review-table{width:100%;border-collapse:collapse;font-size:.82em;min-width:900px}
+table.review-table thead th{background:#006633;color:#fff;padding:10px 6px;text-align:center;font-weight:600;border:1px solid #005528;position:sticky;top:0}
+table.review-table thead th.group-header{background:#004d26;font-size:.95em;letter-spacing:.5px}
+table.review-table thead th.sensor-col{background:#00803d}
+table.review-table thead th.prs-col{background:#006633}
+table.review-table tbody td{padding:6px 4px;border:1px solid #ddd;text-align:center;vertical-align:middle;height:42px}
+table.review-table tbody td:first-child{text-align:left;font-weight:600;background:#f0f7f0;min-width:170px;padding-left:10px;font-size:.85em;color:#333}
+table.review-table tbody tr:nth-child(even){background:#fafffe}
+table.review-table tbody tr:hover{background:#e8f5e9}
+
+table.review-table input[type=text]{width:100%;border:none;border-bottom:2px solid #e0e0e0;padding:4px 2px;text-align:center;font-size:.9em;background:transparent;transition:border-color .2s}
+table.review-table input[type=text]:focus{border-bottom-color:#006633;outline:none;background:#f0fff0}
+table.review-table .prefilled{font-weight:600;color:#2e7d32;font-size:.88em;background:#e8f5e9}
+table.review-table .na-cell{color:#999;font-style:italic;font-size:.85em;background:#f5f5f5}
+
+.btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;justify-content:center}
+.btn{padding:10px 24px;border:none;border-radius:6px;cursor:pointer;font-size:.9em;font-weight:600;transition:all .2s}
+.btn-check{background:#006633;color:#fff}.btn-check:hover{background:#00803d}
+.btn-clear{background:#f44336;color:#fff}.btn-clear:hover{background:#d32f2f}
+.btn-save{background:#ff9800;color:#fff}.btn-save:hover{background:#f57c00}
+.btn-print{background:#2196f3;color:#fff}.btn-print:hover{background:#1976d2}
+
+.score-display{text-align:center;margin-top:16px;padding:12px;border-radius:8px;font-size:1.05em;font-weight:600;display:none}
+.score-display.show{display:block}
+.score-good{background:#e8f5e9;color:#2e7d32;border:2px solid #4caf50}
+.score-ok{background:#fff8e1;color:#f57f17;border:2px solid #ffc107}
+.score-bad{background:#ffebee;color:#c62828;border:2px solid #ef5350}
+
+.hint{font-size:.78em;color:#888;text-align:center;margin-top:8px}
+
+footer{text-align:center;padding:20px;color:#999;font-size:.8em;border-top:1px solid #eee;margin-top:30px}
+
+@media print{
+  .header,.student-bar,.btn-row,.hint,footer{display:none!important}
+  .exercise{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid}
+  table.review-table input{border-bottom:1px solid #ccc}
+  body{background:#fff}
+}
+@media(max-width:700px){
+  .student-bar{flex-direction:column;gap:8px}
+  .container{padding:0 8px 20px}
+  .exercise{padding:14px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>AOTC - Azureus Offshore Training Centre</h1>
+    <p>Sensor &amp; PRS Review Exercise &nbsp;|&nbsp; DPVM Day 3</p>
+</div>
+
+<div class="student-bar">
+    <div><label>Student Name:</label> <input type="text" id="studentName" placeholder="Enter your name"></div>
+    <div><label>Date:</label> <input type="date" id="studentDate"></div>
+    <div>
+        <span class="btn btn-check" onclick="checkAnswers()">Check Answers</span>
+        <span class="btn btn-save" onclick="saveProgress()">Save</span>
+        <span class="btn btn-print" onclick="window.print()">Print</span>
+        <span class="btn btn-clear" onclick="clearAll()">Clear All</span>
+    </div>
+</div>
+
+<div class="container">
+
+<div class="exercise">
+    <h2>Sensor and PRS Review</h2>
+    <p class="task-text"><b>Task:</b> Fill in the empty boxes. Test your knowledge of each sensor and position reference system used in DP operations.</p>
+
+    <div class="table-wrapper">
+    <table class="review-table" id="reviewTable">
+        <thead>
+            <tr>
+                <th rowspan="2" style="min-width:170px">Task: Fill in the boxes</th>
+                <th colspan="3" class="group-header">Sensors</th>
+                <th colspan="8" class="group-header">Position Reference System (PRS)</th>
+            </tr>
+            <tr>
+                <th class="sensor-col">Gyro Compass</th>
+                <th class="sensor-col">VRS</th>
+                <th class="sensor-col">Wind</th>
+                <th class="prs-col">GNSS</th>
+                <th class="prs-col">Fanbeam</th>
+                <th class="prs-col">CyScan</th>
+                <th class="prs-col">Artemis</th>
+                <th class="prs-col">RADius / RadaScan</th>
+                <th class="prs-col">Taut Wire</th>
+                <th class="prs-col">HiPAP</th>
+                <th class="prs-col">SpotTrack</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Row 1: Main Purpose on Board -->
+            <tr>
+                <td>Main Purpose on Board<br><span style="font-weight:normal;font-size:.8em;color:#666">Geographical (Absolute) PRS, Local (Relative) PRS,<br>Wind Speed&Direction, Roll/Pitch/Heave, Heading</span></td>
+                <td><input type="text" data-answer="Heading" data-q="purpose-gyro" placeholder=""></td>
+                <td><input type="text" data-answer="Roll/Pitch/Heave" data-q="purpose-vrs" placeholder=""></td>
+                <td><input type="text" data-answer="Wind Speed & Direction" data-q="purpose-wind" placeholder=""></td>
+                <td><input type="text" data-answer="Geographical PRS" data-q="purpose-gnss" placeholder=""></td>
+                <td><input type="text" data-answer="Local PRS" data-q="purpose-fanbeam" placeholder=""></td>
+                <td><input type="text" data-answer="Local PRS" data-q="purpose-cyscan" placeholder=""></td>
+                <td><input type="text" data-answer="Local PRS" data-q="purpose-artemis" placeholder=""></td>
+                <td><input type="text" data-answer="Local PRS" data-q="purpose-radius" placeholder=""></td>
+                <td><input type="text" data-answer="Local PRS" data-q="purpose-tautwire" placeholder=""></td>
+                <td><input type="text" data-answer="Local PRS" data-q="purpose-hipap" placeholder=""></td>
+                <td><input type="text" data-answer="Local PRS" data-q="purpose-spottrack" placeholder=""></td>
+            </tr>
+            <!-- Row 2: Target Type -->
+            <tr>
+                <td>Target Type<br><span style="font-weight:normal;font-size:.8em;color:#666">Satellites, Reflector/Prism, Transponder, Mechanical</span></td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td><input type="text" data-answer="Satellites" data-q="target-gnss" placeholder=""></td>
+                <td><input type="text" data-answer="Reflector/Prism" data-q="target-fanbeam" placeholder=""></td>
+                <td><input type="text" data-answer="Reflector/Prism" data-q="target-cyscan" placeholder=""></td>
+                <td><input type="text" data-answer="Fixed Station" data-q="target-artemis" placeholder=""></td>
+                <td><input type="text" data-answer="Transponder" data-q="target-radius" placeholder=""></td>
+                <td><input type="text" data-answer="Mechanical" data-q="target-tautwire" placeholder=""></td>
+                <td><input type="text" data-answer="Transponder" data-q="target-hipap" placeholder=""></td>
+                <td><input type="text" data-answer="Reflector/Prism" data-q="target-spottrack" placeholder=""></td>
+            </tr>
+            <!-- Row 3: Communication Type with Target -->
+            <tr>
+                <td>Communication Type with Target<br><span style="font-weight:normal;font-size:.8em;color:#666">Laser, Mechanical, Radar (Microwaves), Hydroacoustic</span></td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td><input type="text" data-answer="Laser" data-q="comm-fanbeam" placeholder=""></td>
+                <td><input type="text" data-answer="Laser" data-q="comm-cyscan" placeholder=""></td>
+                <td><input type="text" data-answer="Radar (Microwaves)" data-q="comm-artemis" placeholder=""></td>
+                <td><input type="text" data-answer="Radar (Microwaves)" data-q="comm-radius" placeholder=""></td>
+                <td><input type="text" data-answer="Mechanical" data-q="comm-tautwire" placeholder=""></td>
+                <td><input type="text" data-answer="Hydroacoustic" data-q="comm-hipap" placeholder=""></td>
+                <td><input type="text" data-answer="Laser" data-q="comm-spottrack" placeholder=""></td>
+            </tr>
+            <!-- Row 4: Max Theoretical Range -->
+            <tr>
+                <td>Max Theoretical Range</td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td><input type="text" data-answer="1000" data-q="range-fanbeam" placeholder="m"></td>
+                <td><input type="text" data-answer="2500" data-q="range-cyscan" placeholder="m"></td>
+                <td><input type="text" data-answer="5000" data-q="range-artemis" placeholder="m"></td>
+                <td><input type="text" data-answer="550" data-q="range-radius" placeholder="m"></td>
+                <td><input type="text" data-answer="300" data-q="range-tautwire" placeholder="m"></td>
+                <td><input type="text" data-answer="4000" data-q="range-hipap" placeholder="m"></td>
+                <td><input type="text" data-answer="1500" data-q="range-spottrack" placeholder="m"></td>
+            </tr>
+            <!-- Row 5: Target Location -->
+            <tr>
+                <td>Target Typical Location<br><span style="font-weight:normal;font-size:.8em;color:#666">Landbased, In water, Space, On board/Fixed Structure</span></td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td><input type="text" data-answer="Space" data-q="loc-gnss" placeholder=""></td>
+                <td><input type="text" data-answer="On board/Fixed Structure" data-q="loc-fanbeam" placeholder=""></td>
+                <td><input type="text" data-answer="On board/Fixed Structure" data-q="loc-cyscan" placeholder=""></td>
+                <td><input type="text" data-answer="Landbased/Fixed Structure" data-q="loc-artemis" placeholder=""></td>
+                <td><input type="text" data-answer="On board/Fixed Structure" data-q="loc-radius" placeholder=""></td>
+                <td><input type="text" data-answer="In water" data-q="loc-tautwire" placeholder=""></td>
+                <td><input type="text" data-answer="In water" data-q="loc-hipap" placeholder=""></td>
+                <td><input type="text" data-answer="On board/Fixed Structure" data-q="loc-spottrack" placeholder=""></td>
+            </tr>
+            <!-- Row 6: Input Power to Target -->
+            <tr>
+                <td>Input Power to Target<br><span style="font-weight:normal;font-size:.8em;color:#666">No Power, Battery, Fixed Power (AC/DC)</span></td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td class="na-cell">N/A</td>
+                <td><input type="text" data-answer="No Power" data-q="pwr-fanbeam" placeholder=""></td>
+                <td><input type="text" data-answer="No Power" data-q="pwr-cyscan" placeholder=""></td>
+                <td><input type="text" data-answer="Battery/Fixed Power" data-q="pwr-artemis" placeholder=""></td>
+                <td><input type="text" data-answer="Battery/Fixed Power" data-q="pwr-radius" placeholder=""></td>
+                <td><input type="text" data-answer="No Power" data-q="pwr-tautwire" placeholder=""></td>
+                <td><input type="text" data-answer="Battery/Fixed Power" data-q="pwr-hipap" placeholder=""></td>
+                <td><input type="text" data-answer="No Power" data-q="pwr-spottrack" placeholder=""></td>
+            </tr>
+            <!-- Row 7: Interface to DP System -->
+            <tr>
+                <td>Interface to DP System<br><span style="font-weight:normal;font-size:.8em;color:#666">Serial (RS422)</span></td>
+                <td><input type="text" data-answer="Serial" data-q="iface-gyro" placeholder=""></td>
+                <td><input type="text" data-answer="Serial" data-q="iface-vrs" placeholder=""></td>
+                <td><input type="text" data-answer="Serial" data-q="iface-wind" placeholder=""></td>
+                <td><input type="text" data-answer="Serial" data-q="iface-gnss" placeholder=""></td>
+                <td><input type="text" data-answer="Serial" data-q="iface-fanbeam" placeholder=""></td>
+                <td><input type="text" data-answer="Serial" data-q="iface-cyscan" placeholder=""></td>
+                <td><input type="text" data-answer="Serial" data-q="iface-artemis" placeholder=""></td>
+                <td><input type="text" data-answer="Serial" data-q="iface-radius" placeholder=""></td>
+                <td><input type="text" data-answer="Serial" data-q="iface-tautwire" placeholder=""></td>
+                <td><input type="text" data-answer="Serial" data-q="iface-hipap" placeholder=""></td>
+                <td><input type="text" data-answer="Serial" data-q="iface-spottrack" placeholder=""></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+    <div class="score-display" id="scoreDisplay"></div>
+    <p class="hint">Tip: Click "Check Answers" to see how you did. Green = correct, Red = needs review. Answers are checked flexibly (partial matches count).</p>
+
+    <div class="btn-row">
+        <span class="btn btn-check" onclick="checkAnswers()">Check Answers</span>
+        <span class="btn btn-clear" onclick="clearAll()">Clear All</span>
+        <span class="btn btn-save" onclick="saveProgress()">Save Progress</span>
+        <span class="btn btn-print" onclick="window.print()">Print</span>
+    </div>
+</div>
+
+</div>
+
+<footer>AOTC - Azureus Offshore Training Centre &nbsp;|&nbsp; Sensor &amp; PRS Review Exercise &nbsp;|&nbsp; DPVM Day 3</footer>
+
+<script>
+document.getElementById('studentDate').valueAsDate = new Date();
+
+function normalize(s) {
+    return s.toLowerCase().replace(/[^a-z0-9]/g, '').trim();
+}
+
+function checkAnswers() {
+    let correct = 0, total = 0;
+    const el = document.getElementById('reviewTable');
+
+    el.querySelectorAll('input[data-answer]').forEach(inp => {
+        total++;
+        const answer = normalize(inp.dataset.answer);
+        const userVal = normalize(inp.value);
+        if (!userVal) {
+            inp.style.background = '#fff3e0';
+            inp.style.borderBottomColor = '#ff9800';
+        } else if (answer.includes(userVal) || userVal.includes(answer) ||
+                   levenshtein(answer, userVal) <= 3 ||
+                   checkAlternatives(inp.dataset.answer, inp.value)) {
+            inp.style.background = '#e8f5e9';
+            inp.style.borderBottomColor = '#4caf50';
+            correct++;
+        } else {
+            inp.style.background = '#ffebee';
+            inp.style.borderBottomColor = '#f44336';
+        }
+    });
+
+    const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+    const scoreEl = document.getElementById('scoreDisplay');
+    scoreEl.innerHTML = `Sensor &amp; PRS: <b>${correct}/${total} (${pct}%)</b>`;
+    scoreEl.className = 'score-display show ' + (pct >= 80 ? 'score-good' : pct >= 50 ? 'score-ok' : 'score-bad');
+}
+
+function checkAlternatives(answer, userVal) {
+    const alts = {
+        'Heading': ['heading', 'gyro heading', 'compass heading', 'ship heading'],
+        'Roll/Pitch/Heave': ['roll pitch heave', 'motion', 'vessel motion', 'rph', 'roll pitch', 'heave roll pitch'],
+        'Wind Speed & Direction': ['wind', 'wind speed direction', 'wind speed and direction', 'windspeed'],
+        'Geographical PRS': ['geographical', 'absolute prs', 'geo prs', 'absolute', 'geographical prs'],
+        'Local PRS': ['local', 'relative prs', 'local prs', 'relative'],
+        'Satellites': ['satellite', 'satellites', 'sat'],
+        'Reflector/Prism': ['reflector', 'prism', 'reflector prism', 'target reflector'],
+        'Fixed Station': ['fixed station', 'fixed', 'shore station'],
+        'Radar Reflector': ['radar reflector', 'racon', 'reflector', 'radar target'],
+        'Mechanical': ['mechanical', 'wire', 'physical'],
+        'Transponder': ['transponder', 'acoustic transponder', 'subsea transponder'],
+        'Laser': ['laser', 'laser beam', 'light'],
+        'Radar (Microwaves)': ['radar', 'microwave', 'microwaves', 'radar microwave'],
+        'Hydroacoustic': ['hydroacoustic', 'acoustic', 'sonar', 'underwater acoustic', 'hydro acoustic'],
+        'Space': ['space', 'orbit', 'satellite orbit'],
+        'On board/Fixed Structure': ['on board', 'fixed structure', 'onboard', 'platform', 'on board fixed structure', 'structure'],
+        'Landbased/Fixed Structure': ['landbased', 'land based', 'land', 'shore', 'landbased fixed structure'],
+        'In water': ['in water', 'subsea', 'underwater', 'seabed', 'water'],
+        'No Power': ['no power', 'none', 'passive', 'no'],
+        'Battery/Fixed Power': ['battery', 'fixed power', 'battery fixed power', 'powered', 'ac dc', 'battery fixed'],
+        'Serial': ['serial', 'rs422', 'rs-422', 'serial rs422', 'serial rs-422', 'rs 422', 'serial data'],
+    };
+    const key = answer;
+    const uv = userVal.toLowerCase().trim();
+    if (alts[key]) {
+        return alts[key].some(a => uv.includes(a) || a.includes(uv));
+    }
+    return false;
+}
+
+function levenshtein(a, b) {
+    const m = a.length, n = b.length;
+    const dp = Array.from({length: m+1}, () => Array(n+1).fill(0));
+    for (let i = 0; i <= m; i++) dp[i][0] = i;
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+    for (let i = 1; i <= m; i++)
+        for (let j = 1; j <= n; j++)
+            dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+(a[i-1]!==b[j-1]?1:0));
+    return dp[m][n];
+}
+
+function getAllInputs() {
+    return document.querySelectorAll('input[data-q]');
+}
+
+function clearAll() {
+    if (!confirm('Clear all answers?')) return;
+    getAllInputs().forEach(inp => {
+        inp.value = '';
+        inp.style.background = 'transparent';
+        inp.style.borderBottomColor = '#e0e0e0';
+    });
+    document.getElementById('scoreDisplay').className = 'score-display';
+}
+
+function saveProgress() {
+    const data = { studentName: document.getElementById('studentName').value, studentDate: document.getElementById('studentDate').value };
+    getAllInputs().forEach(inp => {
+        if (inp.dataset.q) data[inp.dataset.q] = inp.value;
+    });
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    const name = data.studentName || 'student';
+    a.download = `SensorPRS_Review_${name}_${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    alert('Progress saved!');
+}
+
+// Drag-drop restore
+document.addEventListener('dragover', e => e.preventDefault());
+document.addEventListener('drop', e => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && file.name.endsWith('.json')) {
+        const reader = new FileReader();
+        reader.onload = ev => {
+            try {
+                const data = JSON.parse(ev.target.result);
+                if (data.studentName) document.getElementById('studentName').value = data.studentName;
+                if (data.studentDate) document.getElementById('studentDate').value = data.studentDate;
+                getAllInputs().forEach(inp => {
+                    if (inp.dataset.q && data[inp.dataset.q]) inp.value = data[inp.dataset.q];
+                });
+                alert('Progress restored!');
+            } catch(err) { alert('Error reading file'); }
+        };
+        reader.readAsText(file);
+    }
+});
+</script>
+</body>
+</html>
